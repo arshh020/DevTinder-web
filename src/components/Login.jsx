@@ -7,7 +7,7 @@ import { BASE_URL } from "../utils/constants";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
-const Login = () => {
+const Login = (props) => {
   const [emailId, setEmailId] = useState("gogs@gmail.com");
   const [password, setPassword] = useState("Arsh@1234");
   const [error, setError] = useState("");
@@ -30,7 +30,6 @@ const Login = () => {
       return navigate("/");
     } catch (err) {
       setError(err?.response?.data || "Something went wrong");
-      console.error(err);
     }
   };
 
