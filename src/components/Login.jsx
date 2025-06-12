@@ -10,8 +10,8 @@ import Footer from "./Footer";
 const Login = (props) => {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
-  const [emailId, setEmailId] = useState("gogs@gmail.com");
-  const [password, setPassword] = useState("Arsh@1234");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showLoginCard, setShowLoginCard] = useState(true);
   const dispatch = useDispatch();
