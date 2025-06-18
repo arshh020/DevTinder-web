@@ -23,13 +23,13 @@ const EditProfile = ({ user }) => {
         { firstName, lastName, photoUrl, age, gender, about },
         { withCredentials: true }
       );
-      dispatch(addUser(res.data));
+      dispatch(addUser(res?.data));
       setAlert(true);
       setTimeout(() => {
         setAlert(false);
       }, 3000);
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data);
     }
   };
 
