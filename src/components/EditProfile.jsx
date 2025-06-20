@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
@@ -6,12 +6,12 @@ import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
 
 const EditProfile = ({ user }) => {
-  const [firstName, setfirstName] = useState(user.firstName || "");
-  const [lastName, setlastName] = useState(user.lastName || "");
-  const [age, setAge] = useState(user.age || "");
-  const [gender, setGender] = useState(user.gender || "");
-  const [about, setAbout] = useState(user.about || "");
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || "");
+  const [firstName, setfirstName] = useState(user?.firstName || "");
+  const [lastName, setlastName] = useState(user?.lastName || "");
+  const [age, setAge] = useState(user?.age || "");
+  const [gender, setGender] = useState(user?.gender || "");
+  const [about, setAbout] = useState(user?.about || "");
+  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "");
   const [error, setError] = useState("");
   const [showAlert, setAlert] = useState(false);
 
@@ -32,6 +32,15 @@ const EditProfile = ({ user }) => {
       setError(err.response.data);
     }
   };
+
+  useEffect(() => {
+    setfirstName(user?.firstName || "");
+    setlastName(user?.lastName || "");
+    setAbout(user?.about || "");
+    setAge(user?.age || "");
+    setGender(user?.gender || "");
+    setPhotoUrl(user?.photoUrl || "");
+  }, [user]);
 
   return (
     <>
