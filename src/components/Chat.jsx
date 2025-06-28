@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 
 const Chat = () => {
   const { targetUserId } = useParams();
@@ -9,6 +11,25 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState("");
   const user = useSelector((store) => store.user);
   const userId = user?._id;
+
+  const fetchChatMessages = async () => {
+    const chat = await axios.get(BASE_URL + "/chat/" + targetUserId, {
+      withCredentials: true,
+    });
+
+    const chatMessage = chat?.data?.chat?.messages.map((msg) => {
+      return {
+        firstName: msg?.senderId.firstName,
+        lastName: msg?.senderId.lastName,
+        text: msg.text,
+      };
+    });
+    setMessages(chatMessage);
+  };
+
+  useEffect(() => {
+    fetchChatMessages();
+  }, []);
 
   useEffect(() => {
     if (!userId) {
@@ -23,7 +44,6 @@ const Chat = () => {
     });
 
     socket.on("messageReceived", ({ firstName, text }) => {
-      console.log(firstName + " sent: " + text);
       setMessages((messages) => [...messages, { firstName, text }]);
     });
 
@@ -45,11 +65,19 @@ const Chat = () => {
 
   return (
     <div className="w-3/4 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
-      <h1 className="p-5 border-b border-gray-600">Chat</h1>
+      <h1 className="p-5 border-b border-gray-600 text-center">Chat</h1>
       <div className="flex-1 overflow-scroll p-5">
-        {messages.map((message, user, index) => {
+        {messages.map((message, index) => {
           return (
-            <div key={index} className="chat chat-start">
+            <div
+              key={index}
+              className={
+                "chat" +
+                (user.firstName === message.firstName
+                  ? " chat-end"
+                  : " chat-start")
+              }
+            >
               <div className="chat-header">{message.firstName}</div>
               <div className="chat-bubble">{message.text}</div>
               <div className="chat-footer opacity-50">Delivered</div>
