@@ -122,7 +122,7 @@ const Login = (props) => {
                       " join-item" +
                       (password.length > 0 ? "" : " text-gray-500")
                     }
-                    placeholder="Abc@123"
+                    placeholder="Abc@1234"
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <button
@@ -140,8 +140,9 @@ const Login = (props) => {
             </div>
             {!showLoginCard && (
               <p className="text-xs">
-                The password should be atleast 8 characters, should have a
-                capital alphabet and a special character
+                Password must be at least 8 characters long and include: one
+                uppercase letter (A-Z), one number (0-9), and one special
+                character (!@#$%^&*)
               </p>
             )}
             <p className="text-red-400">{error}</p>
