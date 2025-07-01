@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 const Login = (props) => {
   const [firstName, setfirstName] = useState("");
@@ -14,6 +15,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showLoginCard, setShowLoginCard] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -47,7 +49,7 @@ const Login = (props) => {
 
       return navigate("/profile");
     } catch (err) {
-      console.error(err.message);
+      setError(err?.response?.data || "Something went wrong");
     }
   };
 
@@ -64,12 +66,16 @@ const Login = (props) => {
               {!showLoginCard && (
                 <>
                   <fieldset className="fieldset">
-                    <legend className="fieldset-legend">First Name</legend>
+                    <legend className="fieldset-legend">
+                      First Name<span className="text-red-500">*</span>
+                    </legend>
                     <input
                       type="text"
                       value={firstName}
-                      className="input text-gray-500"
-                      placeholder="abc@gmail.com"
+                      className={
+                        "input" + (firstName.length > 0 ? "" : " text-gray-500")
+                      }
+                      placeholder="Abc"
                       onChange={(e) => setfirstName(e.target.value)}
                     />
                   </fieldset>
@@ -78,32 +84,58 @@ const Login = (props) => {
                     <input
                       type="text"
                       value={lastName}
-                      className="input text-gray-500"
-                      placeholder="abc@gmail.com"
+                      className={
+                        "input" + (lastName.length > 0 ? "" : " text-gray-500")
+                      }
+                      placeholder="Abc"
                       onChange={(e) => setlastName(e.target.value)}
                     />
                   </fieldset>{" "}
                 </>
               )}
               <fieldset className="fieldset">
-                <legend className="fieldset-legend">Email ID</legend>
+                <legend className="fieldset-legend">
+                  Email ID
+                  {!showLoginCard && <span className="text-red-500">*</span>}
+                </legend>
                 <input
                   type="text"
                   value={emailId}
-                  className="input text-gray-500"
+                  className={
+                    "input" + (emailId.length > 0 ? "" : " text-gray-500")
+                  }
                   placeholder="abc@gmail.com"
                   onChange={(e) => setEmailId(e.target.value)}
                 />
               </fieldset>
               <fieldset className="fieldset">
-                <legend className="fieldset-legend">Password</legend>
-                <input
-                  type="text"
-                  value={password}
-                  className="input text-gray-500"
-                  placeholder="Abc@123"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <legend className="fieldset-legend">
+                  Password
+                  {!showLoginCard && <span className="text-red-500">*</span>}
+                </legend>
+                <div className="join">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    className={
+                      "input" +
+                      " join-item" +
+                      (password.length > 0 ? "" : " text-gray-500")
+                    }
+                    placeholder="Abc@123"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    className="btn join-item"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="w-5 h-5" />
+                    ) : (
+                      <EyeIcon className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
               </fieldset>
             </div>
             <p className="text-red-400">{error}</p>
