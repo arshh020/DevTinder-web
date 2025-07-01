@@ -138,6 +138,12 @@ const Login = (props) => {
                 </div>
               </fieldset>
             </div>
+            {!showLoginCard && (
+              <p className="text-xs">
+                The password should be atleast 8 characters, should have a
+                capital alphabet and a special character
+              </p>
+            )}
             <p className="text-red-400">{error}</p>
             <div className="card-actions justify-center">
               <button
